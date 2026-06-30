@@ -2,7 +2,8 @@
 .DS_Store
 Thumbs.db
 
-# 构建产物
+# Hugo build output
+# GitHub Actions builds site on the server, so public/ is NOT committed
 public/
 resources/_gen/
 .hugo_build.lock
