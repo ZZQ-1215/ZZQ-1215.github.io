@@ -2,17 +2,7 @@
 # 支持类型：playlist（歌单）、album（专辑）、artist（歌手）、local（本地文件）
 
 sections:
-  - title: "🎧 网易云音乐 · 歌单"
-    badge: violet
-    items:
-      - server: netease
-        type: playlist
-        id: "4977885420"
-      - server: netease
-        type: song
-        id: "27583305"   # 单曲示例：海阔天空（请替换为你的歌曲ID）
-
-  - title: "网易云音乐 · 歌单"
+  - title: "🎧 我的歌单"
     badge: violet
     items:
       - server: netease

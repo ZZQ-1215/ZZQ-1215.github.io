@@ -14,38 +14,48 @@
     </div>
   </div>
   
-  <!-- 评论区（utterances：用 GitHub Issues 当留言系统） -->
-  {{ if and site.Params.comment.enable (eq site.Params.comment.system "utterances") }}
+  <!-- 评论区（giscus：用 GitHub Discussions 当留言系统，支持表情反应做顶/踩） -->
+  {{ if and site.Params.comment.enable (eq site.Params.comment.system "giscus") }}
   <div class="message-comment-section">
     <h2><i class="fas fa-comments"></i> 留言</h2>
-    <script src="https://utteranc.es/client.js"
-            repo="{{ index site.Params.comment.utterances "repo" }}"
-            issue-term="{{ index site.Params.comment.utterances "issue-term" }}"
-            label="{{ index site.Params.comment.utterances "label" }}"
-            theme="{{ index site.Params.comment.utterances "lightTheme" }}"
-            crossorigin="{{ index site.Params.comment.utterances "crossorigin" }}"
+    <script src="https://giscus.app/js/giscus.js"
+            data-repo="{{ index site.Params.comment.giscus "repo" }}"
+            data-repo-id="{{ index site.Params.comment.giscus "repoId" }}"
+            data-category="{{ index site.Params.comment.giscus "category" }}"
+            data-category-id="{{ index site.Params.comment.giscus "categoryId" }}"
+            data-mapping="{{ index site.Params.comment.giscus "mapping" }}"
+            data-strict="{{ index site.Params.comment.giscus "strict" }}"
+            data-reactions-enabled="{{ index site.Params.comment.giscus "reactionsEnabled" }}"
+            data-emit-metadata="{{ index site.Params.comment.giscus "emitMetadata" }}"
+            data-input-position="{{ index site.Params.comment.giscus "inputPosition" }}"
+            data-theme="{{ index site.Params.comment.giscus "lightTheme" }}"
+            data-lang="{{ index site.Params.comment.giscus "lang" }}"
+            data-crossorigin="{{ index site.Params.comment.giscus "crossorigin" }}"
             async>
     </script>
     <script>
-      /* 暗色模式适配：监听主题切换，动态更新 utterances theme */
+      /* 暗色模式适配：监听主题切换，动态更新 giscus theme */
       (function() {
         if (!window.matchMedia) return;
-        var utterancesScript = document.currentScript.previousElementSibling;
-        var lightTheme = "{{ index site.Params.comment.utterances "lightTheme" }}";
-        var darkTheme = "{{ index site.Params.comment.utterances "darkTheme" }}";
-        function setUtterancesTheme(theme) {
-          var iframe = document.querySelector('.utterances-frame');
+        var lightTheme = "{{ index site.Params.comment.giscus "lightTheme" }}";
+        var darkTheme = "{{ index site.Params.comment.giscus "darkTheme" }}";
+        function setGiscusTheme(theme) {
+          var iframe = document.querySelector('iframe.giscus-frame');
           if (iframe) {
             var message = { type: 'set-theme', theme: theme };
-            iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+            iframe.contentWindow.postMessage(message, 'https://giscus.app');
           }
+        }
+        function updateTheme() {
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+                       document.body.classList.contains('dark') ||
+                       (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          setGiscusTheme(isDark ? darkTheme : lightTheme);
         }
         var observer = new MutationObserver(function(mutations) {
           mutations.forEach(function(mutation) {
             if (mutation.attributeName === 'data-theme' || mutation.attributeName === 'class') {
-              var isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-                           document.body.classList.contains('dark');
-              setUtterancesTheme(isDark ? darkTheme : lightTheme);
+              updateTheme();
             }
           });
         });
@@ -310,13 +320,13 @@
   border-radius: 6px;
 }
 
-.message-comment-section iframe.utterances-frame {
+.message-comment-section iframe.giscus-frame {
   width: 100% !important;
   border: 0;
   margin-top: 0.5rem;
 }
 
-.message-comment-section .utterances {
+.message-comment-section .giscus {
   max-width: 100%;
 }
 
