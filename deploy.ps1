@@ -71,7 +71,7 @@ try {
     }
     Write-Host "    Node.js: $nodeExe" -ForegroundColor Gray
 
-    $hugoPath = "D:\Hugo\hugo.exe"
+    $hugoPath = "D:\Hugo\hugo-extended.exe"
     if (-not (Test-Path $hugoPath)) {
         Write-Host "    [ERROR] Hugo not found at: $hugoPath" -ForegroundColor Red
         Pause-Exit

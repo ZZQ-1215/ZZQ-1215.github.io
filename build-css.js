@@ -18,7 +18,7 @@ async function build() {
             ]
         })
     ]).process(css, { from: inputFile });
-    const outDir = path.join(baseDir, 'static/css');
+    const outDir = path.join(baseDir, 'assets/css');
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, 'main.css'), result.css);
     console.log('  CSS built: ' + (result.css.length / 1024).toFixed(1) + ' KB');
