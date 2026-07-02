@@ -71,6 +71,28 @@
         observer.observe(document.body, { attributes: true });
       })();
     </script>
+    {{ else if eq site.Params.comment.system "gitalk" }}
+    <!-- Gitalk 评论（GitHub Issues，无需 Discussions） -->
+    <div id="gitalk-container" style="min-height: 200px;">
+      <p style="text-align: center; color: var(--text-muted, #888); margin: 0; padding: 2rem 0;">评论加载中…</p>
+    </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    <script>
+      var gitalk = new Gitalk({
+        clientID: '{{ index site.Params.comment.gitalk "clientID" }}',
+        clientSecret: '{{ index site.Params.comment.gitalk "clientSecret" }}',
+        repo: '{{ index site.Params.comment.gitalk "repo" }}',
+        owner: '{{ index site.Params.comment.gitalk "owner" }}',
+        admin: ['{{ index site.Params.comment.gitalk "owner" }}'],
+        id: decodeURIComponent(location.pathname),
+        distractionFreeMode: false,
+        language: 'zh-CN',
+        perPage: 10,
+        pagerDirection: 'last'
+      });
+      gitalk.render('gitalk-container');
+    </script>
     {{ end }}
   </div>
   {{ end }}
@@ -337,6 +359,22 @@
 
 .message-comment-section .giscus {
   max-width: 100%;
+}
+
+/* Gitalk 评论区样式 */
+.message-comment-section .gt-container .gt-comment-content {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.message-comment-section .gt-container .gt-header-textarea {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--fg) 20%, transparent);
+}
+
+.message-comment-section .gt-container .gt-comment-body {
+  color: var(--fg);
 }
 
 /* 亮色模式下评论区文字为黑色 */
